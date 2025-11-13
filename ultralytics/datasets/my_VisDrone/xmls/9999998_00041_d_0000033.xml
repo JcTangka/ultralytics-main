@@ -1,0 +1,68 @@
+<annotation>
+	<folder>VOC2007</folder>
+	<filename>9999998_00041_d_0000033.jpg</filename>
+	<source>
+		<database>VisDrone2018 Database</database>
+		<annotation>VisDrone2018</annotation>
+		<image>flickr</image>
+		<flickrid>Unspecified</flickrid>
+	</source>
+	<owner>
+		<flickrid>Haipeng Zhang</flickrid>
+		<name>Haipeng Zhang</name>
+	</owner>
+	<size>
+		<width>2000</width>
+		<height>1500</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>car</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1135</xmin>
+			<ymin>1080</ymin>
+			<xmax>1201</xmax>
+			<ymax>1108</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>pedestrian</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1112</xmin>
+			<ymin>1073</ymin>
+			<xmax>1121</xmax>
+			<ymax>1101</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>pedestrian</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1120</xmin>
+			<ymin>1075</ymin>
+			<xmax>1130</xmax>
+			<ymax>1102</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>ignored regions</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1652</xmin>
+			<ymin>1137</ymin>
+			<xmax>1756</xmax>
+			<ymax>1181</ymax>
+		</bndbox>
+	</object>
+</annotation>

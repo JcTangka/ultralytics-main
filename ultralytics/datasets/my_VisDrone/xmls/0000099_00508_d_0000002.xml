@@ -1,0 +1,56 @@
+<annotation>
+	<folder>VOC2007</folder>
+	<filename>0000099_00508_d_0000002.jpg</filename>
+	<source>
+		<database>VisDrone2018 Database</database>
+		<annotation>VisDrone2018</annotation>
+		<image>flickr</image>
+		<flickrid>Unspecified</flickrid>
+	</source>
+	<owner>
+		<flickrid>Haipeng Zhang</flickrid>
+		<name>Haipeng Zhang</name>
+	</owner>
+	<size>
+		<width>960</width>
+		<height>540</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>pedestrian</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>558</xmin>
+			<ymin>194</ymin>
+			<xmax>586</xmax>
+			<ymax>261</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>pedestrian</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>713</xmin>
+			<ymin>159</ymin>
+			<xmax>725</xmax>
+			<ymax>200</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>pedestrian</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>723</xmin>
+			<ymin>165</ymin>
+			<xmax>740</xmax>
+			<ymax>202</ymax>
+		</bndbox>
+	</object>
+</annotation>

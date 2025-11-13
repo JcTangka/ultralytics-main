@@ -1,0 +1,104 @@
+<annotation>
+	<folder>VOC2007</folder>
+	<filename>0000196_05025_d_0000145.jpg</filename>
+	<source>
+		<database>VisDrone2018 Database</database>
+		<annotation>VisDrone2018</annotation>
+		<image>flickr</image>
+		<flickrid>Unspecified</flickrid>
+	</source>
+	<owner>
+		<flickrid>Haipeng Zhang</flickrid>
+		<name>Haipeng Zhang</name>
+	</owner>
+	<size>
+		<width>1920</width>
+		<height>1080</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>car</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>2</difficult>
+		<bndbox>
+			<xmin>453</xmin>
+			<ymin>428</ymin>
+			<xmax>508</xmax>
+			<ymax>472</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>tricycle</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>1</difficult>
+		<bndbox>
+			<xmin>899</xmin>
+			<ymin>962</ymin>
+			<xmax>1008</xmax>
+			<ymax>1033</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>ignored regions</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>837</xmin>
+			<ymin>894</ymin>
+			<xmax>895</xmax>
+			<ymax>976</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>ignored regions</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>686</xmin>
+			<ymin>799</ymin>
+			<xmax>723</xmax>
+			<ymax>846</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>ignored regions</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>799</xmin>
+			<ymin>809</ymin>
+			<xmax>845</xmax>
+			<ymax>876</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>motor</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>680</xmin>
+			<ymin>742</ymin>
+			<xmax>729</xmax>
+			<ymax>773</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>ignored regions</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>305</xmin>
+			<ymin>232</ymin>
+			<xmax>336</xmax>
+			<ymax>278</ymax>
+		</bndbox>
+	</object>
+</annotation>

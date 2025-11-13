@@ -1,0 +1,44 @@
+<annotation>
+	<folder>VOC2007</folder>
+	<filename>0000351_03333_d_0000536.jpg</filename>
+	<source>
+		<database>VisDrone2018 Database</database>
+		<annotation>VisDrone2018</annotation>
+		<image>flickr</image>
+		<flickrid>Unspecified</flickrid>
+	</source>
+	<owner>
+		<flickrid>Haipeng Zhang</flickrid>
+		<name>Haipeng Zhang</name>
+	</owner>
+	<size>
+		<width>1360</width>
+		<height>765</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>bicycle</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1238</xmin>
+			<ymin>399</ymin>
+			<xmax>1285</xmax>
+			<ymax>442</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>people</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1267</xmin>
+			<ymin>341</ymin>
+			<xmax>1285</xmax>
+			<ymax>363</ymax>
+		</bndbox>
+	</object>
+</annotation>

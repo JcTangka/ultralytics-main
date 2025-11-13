@@ -1,0 +1,16 @@
+# 自定义数据集配置文件
+# 文档参考：https://docs.ultralytics.com/datasets/detect/
+
+# 数据集路径配置
+train: ./train/images  # 训练集图片路径
+val: ./val/images     # 验证集图片路径
+
+
+# 类别定义
+names:
+ 0: Pedestrian
+ 1: Cyclist
+ 2: Car
+ 3: Truck
+ 4: Tram
+ 5: Tricycle

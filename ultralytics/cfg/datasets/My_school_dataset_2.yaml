@@ -1,0 +1,10 @@
+path: D:\Work\PYworks\ultralytics-main\ultralytics\datasets\divide_my_dataset_2
+train: train  # train images (relative to 'path') 178 images
+val: valid # val images (relative to 'path') 22 images
+test: test # test images (optional) 23 images
+
+# Classes
+names:
+  0: people
+  1: cow
+  2: stone
