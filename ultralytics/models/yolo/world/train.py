@@ -22,11 +22,10 @@ def on_pretrain_routine_end(trainer):
 
 
 class WorldTrainer(yolo.detect.DetectionTrainer):
-    """
-    A class to fine-tune a world model on a close-set dataset.
+    """A class to fine-tune a world model on a close-set dataset.
 
-    This trainer extends the DetectionTrainer to support training YOLO World models, which combine
-    visual and textual features for improved object detection and understanding.
+    This trainer extends the DetectionTrainer to support training YOLO World models, which combine visual and textual
+    features for improved object detection and understanding.
 
     Attributes:
         clip (module): The CLIP module for text-image understanding.
@@ -43,8 +42,7 @@ class WorldTrainer(yolo.detect.DetectionTrainer):
     """
 
     def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None):
-        """
-        Initialize a WorldTrainer object with given arguments.
+        """Initialize a WorldTrainer object with given arguments.
 
         Args:
             cfg (dict): Configuration for the trainer.
@@ -64,8 +62,7 @@ class WorldTrainer(yolo.detect.DetectionTrainer):
         self.clip = clip
 
     def get_model(self, cfg=None, weights=None, verbose=True):
-        """
-        Return WorldModel initialized with specified config and weights.
+        """Return WorldModel initialized with specified config and weights.
 
         Args:
             cfg (Dict | str, optional): Model configuration.
@@ -90,8 +87,7 @@ class WorldTrainer(yolo.detect.DetectionTrainer):
         return model
 
     def build_dataset(self, img_path, mode="train", batch=None):
-        """
-        Build YOLO Dataset for training or validation.
+        """Build YOLO Dataset for training or validation.
 
         Args:
             img_path (str): Path to the folder containing images.

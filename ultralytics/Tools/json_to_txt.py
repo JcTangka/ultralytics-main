@@ -1,3 +1,5 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
 import json
 import os
 from pathlib import Path
@@ -17,11 +19,7 @@ with open(json_path) as f:
 
 # 构建图像信息映射表（仅处理1-200）
 image_info = {
-    img["id"]: {
-        "file_name": Path(img["file_name"]).stem,
-        "width": img["width"],
-        "height": img["height"]
-    }
+    img["id"]: {"file_name": Path(img["file_name"]).stem, "width": img["width"], "height": img["height"]}
     for img in data["images"]
     if start_id <= img["id"] <= end_id
 }
