@@ -1,4 +1,5 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+from __future__ import annotations
 
 import contextlib
 import importlib.metadata
@@ -135,17 +136,15 @@ if TQDM_RICH := str(os.getenv("YOLO_TQDM_RICH", False)).lower() == "true":
 
 
 class TQDM(rich.tqdm if TQDM_RICH else tqdm.tqdm):
-    """
-    A custom TQDM progress bar class that extends the original tqdm functionality.
+    """A custom TQDM progress bar class that extends the original tqdm functionality.
 
-    This class modifies the behavior of the original tqdm progress bar based on global settings and provides
-    additional customization options.
+    This class modifies the behavior of the original tqdm progress bar based on global settings and provides additional
+    customization options.
 
     Attributes:
-        disable (bool): Whether to disable the progress bar. Determined by the global VERBOSE setting and
-            any passed 'disable' argument.
-        bar_format (str): The format string for the progress bar. Uses the global TQDM_BAR_FORMAT if not
-            explicitly set.
+        disable (bool): Whether to disable the progress bar. Determined by the global VERBOSE setting and any passed
+            'disable' argument.
+        bar_format (str): The format string for the progress bar. Uses the global TQDM_BAR_FORMAT if not explicitly set.
 
     Methods:
         __init__: Initializes the TQDM object with custom settings.
@@ -158,8 +157,7 @@ class TQDM(rich.tqdm if TQDM_RICH else tqdm.tqdm):
     """
 
     def __init__(self, *args, **kwargs):
-        """
-        Initializes a custom TQDM progress bar.
+        """Initializes a custom TQDM progress bar.
 
         This class extends the original tqdm class to provide customized behavior for Ultralytics projects.
 
@@ -167,15 +165,15 @@ class TQDM(rich.tqdm if TQDM_RICH else tqdm.tqdm):
             *args (Any): Variable length argument list to be passed to the original tqdm constructor.
             **kwargs (Any): Arbitrary keyword arguments to be passed to the original tqdm constructor.
 
-        Notes:
-            - The progress bar is disabled if VERBOSE is False or if 'disable' is explicitly set to True in kwargs.
-            - The default bar format is set to TQDM_BAR_FORMAT unless overridden in kwargs.
-
         Examples:
             >>> from ultralytics.utils import TQDM
             >>> for i in TQDM(range(100)):
             ...     # Your code here
             ...     pass
+
+        Notes:
+            - The progress bar is disabled if VERBOSE is False or if 'disable' is explicitly set to True in kwargs.
+            - The default bar format is set to TQDM_BAR_FORMAT unless overridden in kwargs.
         """
         warnings.filterwarnings("ignore", category=tqdm.TqdmExperimentalWarning)  # suppress tqdm.rich warning
         kwargs["disable"] = not VERBOSE or kwargs.get("disable", False)
@@ -188,11 +186,10 @@ class TQDM(rich.tqdm if TQDM_RICH else tqdm.tqdm):
 
 
 class SimpleClass:
-    """
-    A simple base class for creating objects with string representations of their attributes.
+    """A simple base class for creating objects with string representations of their attributes.
 
-    This class provides a foundation for creating objects that can be easily printed or represented as strings,
-    showing all their non-callable attributes. It's useful for debugging and introspection of object states.
+    This class provides a foundation for creating objects that can be easily printed or represented as strings, showing
+    all their non-callable attributes. It's useful for debugging and introspection of object states.
 
     Methods:
         __str__: Returns a human-readable string representation of the object.
@@ -227,7 +224,7 @@ class SimpleClass:
                     # Display only the module and class name for subclasses
                     s = f"{a}: {v.__module__}.{v.__class__.__name__} object"
                 else:
-                    s = f"{a}: {repr(v)}"
+                    s = f"{a}: {v!r}"
                 attr.append(s)
         return f"{self.__module__}.{self.__class__.__name__} object with attributes:\n\n" + "\n".join(attr)
 
@@ -242,12 +239,11 @@ class SimpleClass:
 
 
 class IterableSimpleNamespace(SimpleNamespace):
-    """
-    An iterable SimpleNamespace class that provides enhanced functionality for attribute access and iteration.
+    """An iterable SimpleNamespace class that provides enhanced functionality for attribute access and iteration.
 
-    This class extends the SimpleNamespace class with additional methods for iteration, string representation,
-    and attribute access. It is designed to be used as a convenient container for storing and accessing
-    configuration parameters.
+    This class extends the SimpleNamespace class with additional methods for iteration, string representation, and
+    attribute access. It is designed to be used as a convenient container for storing and accessing configuration
+    parameters.
 
     Methods:
         __iter__: Returns an iterator of key-value pairs from the namespace's attributes.
@@ -302,8 +298,7 @@ class IterableSimpleNamespace(SimpleNamespace):
 
 
 def plt_settings(rcparams=None, backend="Agg"):
-    """
-    Decorator to temporarily set rc parameters and the backend for a plotting function.
+    """Decorator to temporarily set rc parameters and the backend for a plotting function.
 
     Args:
         rcparams (dict, optional): Dictionary of rc parameters to set.
@@ -356,12 +351,11 @@ def plt_settings(rcparams=None, backend="Agg"):
 
 
 def set_logging(name="LOGGING_NAME", verbose=True):
-    """
-    Sets up logging with UTF-8 encoding and configurable verbosity.
+    """Sets up logging with UTF-8 encoding and configurable verbosity.
 
-    This function configures logging for the Ultralytics library, setting the appropriate logging level and
-    formatter based on the verbosity flag and the current process rank. It handles special cases for Windows
-    environments where UTF-8 encoding might not be the default.
+    This function configures logging for the Ultralytics library, setting the appropriate logging level and formatter
+    based on the verbosity flag and the current process rank. It handles special cases for Windows environments where
+    UTF-8 encoding might not be the default.
 
     Args:
         name (str): Name of the logger. Defaults to "LOGGING_NAME".
@@ -439,8 +433,7 @@ def emojis(string=""):
 
 
 class ThreadingLocked:
-    """
-    A decorator class for ensuring thread-safe execution of a function or method.
+    """A decorator class for ensuring thread-safe execution of a function or method.
 
     This class can be used as a decorator to make sure that if the decorated function is called from multiple threads,
     only one thread at a time will be able to execute the function.
@@ -473,8 +466,7 @@ class ThreadingLocked:
 
 
 class YAML:
-    """
-    YAML utility class for efficient file operations with automatic C-implementation detection.
+    """YAML utility class for efficient file operations with automatic C-implementation detection.
 
     This class provides optimized YAML loading and saving operations using PyYAML's fastest available implementation
     (C-based when possible). It implements a singleton pattern with lazy initialization, allowing direct class method
@@ -524,8 +516,7 @@ class YAML:
 
     @classmethod
     def save(cls, file="data.yaml", data=None, header=""):
-        """
-        Save Python object as YAML file.
+        """Save Python object as YAML file.
 
         Args:
             file (str | Path): Path to save YAML file.
@@ -554,8 +545,7 @@ class YAML:
 
     @classmethod
     def load(cls, file="data.yaml", append_filename=False):
-        """
-        Load YAML file to Python object with robust error handling.
+        """Load YAML file to Python object with robust error handling.
 
         Args:
             file (str | Path): Path to YAML file.
@@ -589,8 +579,7 @@ class YAML:
 
     @classmethod
     def print(cls, yaml_file):
-        """
-        Pretty print YAML file or object to console.
+        """Pretty print YAML file or object to console.
 
         Args:
             yaml_file (str | Path | dict): Path to YAML file or dict to print.
@@ -613,8 +602,7 @@ DEFAULT_CFG = IterableSimpleNamespace(**DEFAULT_CFG_DICT)
 
 
 def read_device_model() -> str:
-    """
-    Reads the device model information from the system and caches it for quick access.
+    """Reads the device model information from the system and caches it for quick access.
 
     Returns:
         (str): Kernel release information.
@@ -623,8 +611,7 @@ def read_device_model() -> str:
 
 
 def is_ubuntu() -> bool:
-    """
-    Check if the OS is Ubuntu.
+    """Check if the OS is Ubuntu.
 
     Returns:
         (bool): True if OS is Ubuntu, False otherwise.
@@ -637,8 +624,7 @@ def is_ubuntu() -> bool:
 
 
 def is_colab():
-    """
-    Check if the current script is running inside a Google Colab notebook.
+    """Check if the current script is running inside a Google Colab notebook.
 
     Returns:
         (bool): True if running inside a Colab notebook, False otherwise.
@@ -647,8 +633,7 @@ def is_colab():
 
 
 def is_kaggle():
-    """
-    Check if the current script is running inside a Kaggle kernel.
+    """Check if the current script is running inside a Kaggle kernel.
 
     Returns:
         (bool): True if running inside a Kaggle kernel, False otherwise.
@@ -657,13 +642,12 @@ def is_kaggle():
 
 
 def is_jupyter():
-    """
-    Check if the current script is running inside a Jupyter Notebook.
+    """Check if the current script is running inside a Jupyter Notebook.
 
     Returns:
         (bool): True if running inside a Jupyter Notebook, False otherwise.
 
-    Note:
+    Notes:
         - Only works on Colab and Kaggle, other environments like Jupyterlab and Paperspace are not reliably detectable.
         - "get_ipython" in globals() method suffers false positives when IPython package installed manually.
     """
@@ -671,8 +655,7 @@ def is_jupyter():
 
 
 def is_runpod():
-    """
-    Check if the current script is running inside a RunPod container.
+    """Check if the current script is running inside a RunPod container.
 
     Returns:
         (bool): True if running in RunPod, False otherwise.
@@ -681,8 +664,7 @@ def is_runpod():
 
 
 def is_docker() -> bool:
-    """
-    Determine if the script is running inside a Docker container.
+    """Determine if the script is running inside a Docker container.
 
     Returns:
         (bool): True if the script is running inside a Docker container, False otherwise.
@@ -695,8 +677,7 @@ def is_docker() -> bool:
 
 
 def is_raspberrypi() -> bool:
-    """
-    Determines if the Python environment is running on a Raspberry Pi.
+    """Determines if the Python environment is running on a Raspberry Pi.
 
     Returns:
         (bool): True if running on a Raspberry Pi, False otherwise.
@@ -705,8 +686,7 @@ def is_raspberrypi() -> bool:
 
 
 def is_jetson() -> bool:
-    """
-    Determines if the Python environment is running on an NVIDIA Jetson device.
+    """Determines if the Python environment is running on an NVIDIA Jetson device.
 
     Returns:
         (bool): True if running on an NVIDIA Jetson device, False otherwise.
@@ -715,8 +695,7 @@ def is_jetson() -> bool:
 
 
 def is_online() -> bool:
-    """
-    Check internet connectivity by attempting to connect to a known online host.
+    """Check internet connectivity by attempting to connect to a known online host.
 
     Returns:
         (bool): True if connection is successful, False otherwise.
@@ -733,8 +712,7 @@ def is_online() -> bool:
 
 
 def is_pip_package(filepath: str = __name__) -> bool:
-    """
-    Determines if the file at the given filepath is part of a pip package.
+    """Determines if the file at the given filepath is part of a pip package.
 
     Args:
         filepath (str): The filepath to check.
@@ -751,9 +729,8 @@ def is_pip_package(filepath: str = __name__) -> bool:
     return spec is not None and spec.origin is not None
 
 
-def is_dir_writeable(dir_path: Union[str, Path]) -> bool:
-    """
-    Check if a directory is writeable.
+def is_dir_writeable(dir_path: str | Path) -> bool:
+    """Check if a directory is writeable.
 
     Args:
         dir_path (str | Path): The path to the directory.
@@ -765,8 +742,7 @@ def is_dir_writeable(dir_path: Union[str, Path]) -> bool:
 
 
 def is_pytest_running():
-    """
-    Determines whether pytest is currently running or not.
+    """Determines whether pytest is currently running or not.
 
     Returns:
         (bool): True if pytest is running, False otherwise.
@@ -775,8 +751,7 @@ def is_pytest_running():
 
 
 def is_github_action_running() -> bool:
-    """
-    Determine if the current environment is a GitHub Actions runner.
+    """Determine if the current environment is a GitHub Actions runner.
 
     Returns:
         (bool): True if the current environment is a GitHub Actions runner, False otherwise.
@@ -785,8 +760,7 @@ def is_github_action_running() -> bool:
 
 
 def get_git_dir():
-    """
-    Determines whether the current file is part of a git repository and if so, returns the repository root directory.
+    """Determines whether the current file is part of a git repository and if so, returns the repository root directory.
 
     Returns:
         (Path | None): Git root directory if found or None if not found.
@@ -797,8 +771,7 @@ def get_git_dir():
 
 
 def is_git_dir():
-    """
-    Determines whether the current file is part of a git repository.
+    """Determines whether the current file is part of a git repository.
 
     Returns:
         (bool): True if current file is part of a git repository.
@@ -807,8 +780,7 @@ def is_git_dir():
 
 
 def get_git_origin_url():
-    """
-    Retrieves the origin URL of a git repository.
+    """Retrieves the origin URL of a git repository.
 
     Returns:
         (str | None): The origin URL of the git repository or None if not git directory.
@@ -822,8 +794,7 @@ def get_git_origin_url():
 
 
 def get_git_branch():
-    """
-    Returns the current git branch name. If not in a git repository, returns None.
+    """Returns the current git branch name. If not in a git repository, returns None.
 
     Returns:
         (str | None): The current git branch name or None if not a git directory.
@@ -837,8 +808,7 @@ def get_git_branch():
 
 
 def get_default_args(func):
-    """
-    Returns a dictionary of default arguments for a function.
+    """Returns a dictionary of default arguments for a function.
 
     Args:
         func (callable): The function to inspect.
@@ -851,8 +821,7 @@ def get_default_args(func):
 
 
 def get_ubuntu_version():
-    """
-    Retrieve the Ubuntu version if the OS is Ubuntu.
+    """Retrieve the Ubuntu version if the OS is Ubuntu.
 
     Returns:
         (str): Ubuntu version or None if not an Ubuntu OS.
@@ -866,8 +835,7 @@ def get_ubuntu_version():
 
 
 def get_user_config_dir(sub_dir="Ultralytics"):
-    """
-    Return the appropriate config directory based on the environment operating system.
+    """Return the appropriate config directory based on the environment operating system.
 
     Args:
         sub_dir (str): The name of the subdirectory to create.
@@ -915,9 +883,8 @@ SETTINGS_FILE = USER_CONFIG_DIR / "settings.json"
 
 
 def colorstr(*input):
-    r"""
-    Colors a string based on the provided color and style arguments. Utilizes ANSI escape codes.
-    See https://en.wikipedia.org/wiki/ANSI_escape_code for more details.
+    r"""Colors a string based on the provided color and style arguments. Utilizes ANSI escape codes. See
+    https://en.wikipedia.org/wiki/ANSI_escape_code for more details.
 
     This function can be called in two ways:
         - colorstr('color', 'style', 'your string')
@@ -926,10 +893,9 @@ def colorstr(*input):
     In the second form, 'blue' and 'bold' will be applied by default.
 
     Args:
-        *input (str | Path): A sequence of strings where the first n-1 strings are color and style arguments,
-                      and the last string is the one to be colored.
-
-    Supported Colors and Styles:
+        *input (str | Path): A sequence of strings where the first n-1 strings are color and style arguments, and the
+            last string is the one to be colored.
+        Supported Colors and Styles:
         Basic Colors: 'black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white'
         Bright Colors: 'bright_black', 'bright_red', 'bright_green', 'bright_yellow',
                        'bright_blue', 'bright_magenta', 'bright_cyan', 'bright_white'
@@ -968,8 +934,7 @@ def colorstr(*input):
 
 
 def remove_colorstr(input_string):
-    """
-    Removes ANSI escape codes from a string, effectively un-coloring it.
+    """Removes ANSI escape codes from a string, effectively un-coloring it.
 
     Args:
         input_string (str): The string to remove color and style from.
@@ -986,8 +951,7 @@ def remove_colorstr(input_string):
 
 
 class TryExcept(contextlib.ContextDecorator):
-    """
-    Ultralytics TryExcept class. Use as @TryExcept() decorator or 'with TryExcept():' context manager.
+    """Ultralytics TryExcept class. Use as @TryExcept() decorator or 'with TryExcept():' context manager.
 
     Examples:
         As a decorator:
@@ -1019,8 +983,7 @@ class TryExcept(contextlib.ContextDecorator):
 
 
 class Retry(contextlib.ContextDecorator):
-    """
-    Retry class for function execution with exponential backoff.
+    """Retry class for function execution with exponential backoff.
 
     Can be used as a decorator to retry a function on exceptions, up to a specified number of times with an
     exponentially increasing delay between retries.
@@ -1059,12 +1022,11 @@ class Retry(contextlib.ContextDecorator):
 
 
 def threaded(func):
-    """
-    Multi-threads a target function by default and returns the thread or function result.
+    """Multi-threads a target function by default and returns the thread or function result.
 
-    This decorator provides flexible execution of the target function, either in a separate thread or synchronously.
-    By default, the function runs in a thread, but this can be controlled via the 'threaded=False' keyword argument
-    which is removed from kwargs before calling the function.
+    This decorator provides flexible execution of the target function, either in a separate thread or synchronously. By
+    default, the function runs in a thread, but this can be controlled via the 'threaded=False' keyword argument which
+    is removed from kwargs before calling the function.
 
     Args:
         func (callable): The function to be potentially executed in a separate thread.
@@ -1094,8 +1056,7 @@ def threaded(func):
 
 
 def set_sentry():
-    """
-    Initialize the Sentry SDK for error tracking and reporting.
+    """Initialize the Sentry SDK for error tracking and reporting.
 
     Only used if sentry_sdk package is installed and sync=True in settings. Run 'yolo settings' to see and update
     settings.
@@ -1122,13 +1083,12 @@ def set_sentry():
         return
     # If sentry_sdk package is not installed then return and do not use Sentry
     try:
-        import sentry_sdk  # noqa
+        import sentry_sdk
     except ImportError:
         return
 
     def before_send(event, hint):
-        """
-        Modify the event before sending it to Sentry based on specific exception types and messages.
+        """Modify the event before sending it to Sentry based on specific exception types and messages.
 
         Args:
             event (dict): The event dictionary containing information about the error.
@@ -1164,8 +1124,7 @@ def set_sentry():
 
 
 class JSONDict(dict):
-    """
-    A dictionary-like class that provides JSON persistence for its contents.
+    """A dictionary-like class that provides JSON persistence for its contents.
 
     This class extends the built-in dictionary to automatically save its contents to a JSON file whenever they are
     modified. It ensures thread-safe operations using a lock.
@@ -1192,7 +1151,7 @@ class JSONDict(dict):
         >>> json_dict.clear()
     """
 
-    def __init__(self, file_path: Union[str, Path] = "data.json"):
+    def __init__(self, file_path: str | Path = "data.json"):
         """Initialize a JSONDict object with a specified file path for JSON persistence."""
         super().__init__()
         self.file_path = Path(file_path)
@@ -1257,8 +1216,7 @@ class JSONDict(dict):
 
 
 class SettingsManager(JSONDict):
-    """
-    SettingsManager class for managing and persisting Ultralytics settings.
+    """SettingsManager class for managing and persisting Ultralytics settings.
 
     This class extends JSONDict to provide JSON persistence for settings, ensuring thread-safe operations and default
     values. It validates settings on initialization and provides methods to update or reset settings.
