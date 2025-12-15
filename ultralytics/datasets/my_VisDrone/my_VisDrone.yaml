@@ -1,22 +1,23 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
 # 自定义数据集配置文件
 # 文档参考：https://docs.ultralytics.com/datasets/detect/
 
 # 数据集路径配置
-train: D:\\Work\\PYworks\\ultralytics-main\\ultralytics\\datasets\\train  # 训练集图片路径
-val: D:\\Work\\PYworks\\ultralytics-main\\ultralytics\\datasets\\val     # 验证集图片路径
-
+train: D:\\Work\\PYworks\\ultralytics-main\\ultralytics\\datasets\\train # 训练集图片路径
+val: D:\\Work\\PYworks\\ultralytics-main\\ultralytics\\datasets\\val # 验证集图片路径
 
 # 类别定义
 names:
- 0: awning-tricycle
- 1: bicycle
- 2: bus
- 3: car
- 4: ignored regions
- 5: motor
- 6: others
- 7: pedestrian
- 8: people
- 9: tricycle
- 10: truck
- 11: van
+  0: awning-tricycle
+  1: bicycle
+  2: bus
+  3: car
+  4: ignored regions
+  5: motor
+  6: others
+  7: pedestrian
+  8: people
+  9: tricycle
+  10: truck
+  11: van

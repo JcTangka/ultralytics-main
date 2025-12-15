@@ -1,12 +1,19 @@
-from ultralytics import YOLO
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
 import json
 import os
+
+from ultralytics import YOLO
 
 # 1. 加载训练好的模型
 model = YOLO("D://Work//PYworks//ultralytics-main//runs//detect//train8//weights//best.pt")
 
 # 2. 推理
-results = model.predict("D://Work//PYworks//ultralytics-main//ultralytics//datasets//all_divide_my_dataset//train//images//day_people_image15.jpg", save=False, conf=0.25)
+results = model.predict(
+    "D://Work//PYworks//ultralytics-main//ultralytics//datasets//all_divide_my_dataset//train//images//day_people_image15.jpg",
+    save=False,
+    conf=0.25,
+)
 
 # 3. 构造JSON结果
 output = []
@@ -20,16 +27,9 @@ for result in results:
         conf = float(box.conf[0])
         xyxy = box.xyxy[0].tolist()  # [x_min, y_min, x_max, y_max]
 
-        detections.append({
-            "class": cls_name,
-            "confidence": conf,
-            "bbox": xyxy
-        })
+        detections.append({"class": cls_name, "confidence": conf, "bbox": xyxy})
 
-    output.append({
-        "image_id": image_name,
-        "detections": detections
-    })
+    output.append({"image_id": image_name, "detections": detections})
 
 # 4. 保存为 JSON 文件
 with open("detections.json", "w", encoding="utf-8") as f:
