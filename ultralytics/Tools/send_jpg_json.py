@@ -1,8 +1,10 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
 # -*- coding: utf-8 -*-
 """
 detect_sender.py
 发送端：实时检测监控流；当某帧检测到目标时，把“带有bounding box的这一帧图像(JPEG)”
-和“该帧的JSON元数据”通过HTTP POST发送到指定服务器。
+和“该帧的JSON元数据”通过HTTP POST发送到指定服务器。.
 
 依赖安装：
     pip install ultralytics opencv-python requests
@@ -23,13 +25,14 @@ from datetime import datetime
 
 import cv2
 import requests
+
 from ultralytics import YOLO
 
 
 def now_ts_str():
-    """形如 2025-09-13_14-05-30-123 的时间戳（毫秒精度）"""
+    """形如 2025-09-13_14-05-30-123 的时间戳（毫秒精度）."""
     t = datetime.now()
-    return t.strftime("%Y-%m-%d_%H-%M-%S-") + f"{int(t.microsecond/1000):03d}"
+    return t.strftime("%Y-%m-%d_%H-%M-%S-") + f"{int(t.microsecond / 1000):03d}"
 
 
 def encode_jpeg_bgr(image_bgr, quality=90) -> bytes:
@@ -41,17 +44,14 @@ def encode_jpeg_bgr(image_bgr, quality=90) -> bytes:
 
 
 def yolo_result_to_json(result, model_names):
-    """
-    将 YOLOv8 单帧结果转为 JSON 可序列化的字典：
-    - timestamp
-    - image: width, height
-    - objects: [ {class_id, label, confidence, bbox_xyxy} ... ]
+    """将 YOLOv8 单帧结果转为 JSON 可序列化的字典： - timestamp - image: width, height - objects: [ {class_id, label, confidence,
+    bbox_xyxy} ... ].
     """
     h, w = result.orig_shape if hasattr(result, "orig_shape") else (None, None)
     data = {
         "timestamp": datetime.now().isoformat(timespec="milliseconds"),
         "image": {"width": w, "height": h},
-        "objects": []
+        "objects": [],
     }
 
     if result.boxes is None or len(result.boxes) == 0:
@@ -65,17 +65,19 @@ def yolo_result_to_json(result, model_names):
     for i in range(len(xyxy)):
         cls_id = int(cls[i])
         label = model_names.get(cls_id, str(cls_id))
-        data["objects"].append({
-            "class_id": cls_id,
-            "label": label,
-            "confidence": float(conf[i]),
-            "bbox_xyxy": [float(v) for v in xyxy[i]]  # [x1,y1,x2,y2]
-        })
+        data["objects"].append(
+            {
+                "class_id": cls_id,
+                "label": label,
+                "confidence": float(conf[i]),
+                "bbox_xyxy": [float(v) for v in xyxy[i]],  # [x1,y1,x2,y2]
+            }
+        )
     return data
 
 
 def open_cv_source(source_str):
-    """支持摄像头索引/RTSP/文件路径。"""
+    """支持摄像头索引/RTSP/文件路径。."""
     try:
         if source_str.isdigit():
             return cv2.VideoCapture(int(source_str))
@@ -119,12 +121,7 @@ def main():
                 continue
 
             # 推理（逐帧）
-            results = model.predict(
-                frame,
-                conf=args.conf,
-                iou=args.iou,
-                verbose=False
-            )
+            results = model.predict(frame, conf=args.conf, iou=args.iou, verbose=False)
             result = results[0]
 
             # 画框预览图
@@ -148,9 +145,7 @@ def main():
                 files = {
                     "image": (filename, jpg_bytes, "image/jpeg"),
                 }
-                data = {
-                    "meta": json.dumps(meta, ensure_ascii=False)
-                }
+                data = {"meta": json.dumps(meta, ensure_ascii=False)}
 
                 try:
                     resp = session.post(args.server_url, files=files, data=data, timeout=args.timeout)
@@ -164,7 +159,7 @@ def main():
             # 本地显示
             if not args.no_show:
                 cv2.imshow("YOLOv8 Live (Sender)", vis_img)
-                if cv2.waitKey(1) & 0xFF == ord('q'):
+                if cv2.waitKey(1) & 0xFF == ord("q"):
                     break
 
     finally:
