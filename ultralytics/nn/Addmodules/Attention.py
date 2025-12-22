@@ -1,12 +1,14 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+
 from ultralytics.nn.modules import Conv
 
 
 class MHSA(nn.Module):
     def __init__(self, n_dims, width=14, height=14, heads=4, pos_emb=False):
-        super(MHSA, self).__init__()
+        super().__init__()
 
         self.heads = heads
         self.query = nn.Conv2d(n_dims, n_dims, kernel_size=1)
@@ -14,10 +16,12 @@ class MHSA(nn.Module):
         self.value = nn.Conv2d(n_dims, n_dims, kernel_size=1)
         self.pos = pos_emb
         if self.pos:
-            self.rel_h_weight = nn.Parameter(torch.randn([1, heads, (n_dims) // heads, 1, int(height)]),
-                                             requires_grad=True)
-            self.rel_w_weight = nn.Parameter(torch.randn([1, heads, (n_dims) // heads, int(width), 1]),
-                                             requires_grad=True)
+            self.rel_h_weight = nn.Parameter(
+                torch.randn([1, heads, (n_dims) // heads, 1, int(height)]), requires_grad=True
+            )
+            self.rel_w_weight = nn.Parameter(
+                torch.randn([1, heads, (n_dims) // heads, int(width), 1]), requires_grad=True
+            )
         self.softmax = nn.Softmax(dim=-1)
 
     def forward(self, x):
@@ -28,16 +32,24 @@ class MHSA(nn.Module):
         # print('q shape:{},k shape:{},v shape:{}'.format(q.shape,k.shape,v.shape))  #1,4,64,256
         content_content = torch.matmul(q.permute(0, 1, 3, 2), k)  # 1,C,h*w,h*w
         # print("qkT=",content_content.shape)
-        c1, c2, c3, c4 = content_content.size()
+        _c1, _c2, c3, _c4 = content_content.size()
         if self.pos:
             # print("old content_content shape",content_content.shape) #1,4,256,256
-            content_position = (self.rel_h_weight + self.rel_w_weight).view(1, self.heads, C // self.heads, -1).permute(
-                0, 1, 3, 2)  # 1,4,1024,64
+            content_position = (
+                (self.rel_h_weight + self.rel_w_weight).view(1, self.heads, C // self.heads, -1).permute(0, 1, 3, 2)
+            )  # 1,4,1024,64
 
             content_position = torch.matmul(content_position, q)  # ([1, 4, 1024, 256])
-            content_position = content_position if (
-                    content_content.shape == content_position.shape) else content_position[:, :, :c3, ]
-            assert (content_content.shape == content_position.shape)
+            content_position = (
+                content_position
+                if (content_content.shape == content_position.shape)
+                else content_position[
+                    :,
+                    :,
+                    :c3,
+                ]
+            )
+            assert content_content.shape == content_position.shape
             # print('new pos222-> shape:',content_position.shape)
             # print('new content222-> shape:',content_content.shape)
             energy = content_content + content_position
@@ -54,7 +66,7 @@ class BottleneckTransformer(nn.Module):
     # expansion = 1
 
     def __init__(self, c1, c2, stride=1, heads=4, mhsa=True, resolution=None, expansion=1):
-        super(BottleneckTransformer, self).__init__()
+        super().__init__()
         c_ = int(c2 * expansion)
         self.cv1 = Conv(c1, c_, 1, 1)
         # self.bn1 = nn.BatchNorm2d(c2)
@@ -69,8 +81,7 @@ class BottleneckTransformer(nn.Module):
         self.shortcut = c1 == c2
         if stride != 1 or c1 != expansion * c2:
             self.shortcut = nn.Sequential(
-                nn.Conv2d(c1, expansion * c2, kernel_size=1, stride=stride),
-                nn.BatchNorm2d(expansion * c2)
+                nn.Conv2d(c1, expansion * c2, kernel_size=1, stride=stride), nn.BatchNorm2d(expansion * c2)
             )
         self.fc1 = nn.Linear(c2, c2)
 
@@ -82,14 +93,17 @@ class BottleneckTransformer(nn.Module):
 class BoT3(nn.Module):
     # CSP Bottleneck with 3 convolutions
     def __init__(self, c1, c2, n=1, e=0.5, e2=1, w=20, h=20):  # ch_in, ch_out, number, , expansion,w,h
-        super(BoT3, self).__init__()
+        super().__init__()
         c_ = int(c2 * e)  # hidden channels
         self.cv1 = Conv(c1, c_, 1, 1)
         self.cv2 = Conv(c1, c_, 1, 1)
         self.cv3 = Conv(2 * c_, c2, 1)  # act=FReLU(c2)
         self.m = nn.Sequential(
-            *[BottleneckTransformer(c_, c_, stride=1, heads=4, mhsa=True, resolution=(w, h), expansion=e2) for _ in
-              range(n)])
+            *[
+                BottleneckTransformer(c_, c_, stride=1, heads=4, mhsa=True, resolution=(w, h), expansion=e2)
+                for _ in range(n)
+            ]
+        )
         # self.m = nn.Sequential(*[CrossConv(c_, c_, 3, 1, g, 1.0, shortcut) for _ in range(n)])
 
     def forward(self, x):
@@ -108,9 +122,9 @@ class GAM(nn.Module):
         self.relu = nn.ReLU(inplace=True)
         self.linear2 = nn.Linear(inchannel_rate, in_channels)
 
-        self.conv1 = nn.Conv2d(in_channels, inchannel_rate, kernel_size=7, padding=3, padding_mode='replicate')
+        self.conv1 = nn.Conv2d(in_channels, inchannel_rate, kernel_size=7, padding=3, padding_mode="replicate")
 
-        self.conv2 = nn.Conv2d(inchannel_rate, out_channels, kernel_size=7, padding=3, padding_mode='replicate')
+        self.conv2 = nn.Conv2d(inchannel_rate, out_channels, kernel_size=7, padding=3, padding_mode="replicate")
 
         self.norm1 = nn.BatchNorm2d(inchannel_rate)
         self.norm2 = nn.BatchNorm2d(out_channels)
