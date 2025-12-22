@@ -1,3 +1,4 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
 # python D://Work//PYworks//ultralytics-main//ultralytics//Tools//video_detect_yolov8.py
 # --model D://Work//PYworks//ultralytics-main//runs//detect//train8//weights//best.pt
@@ -16,7 +17,7 @@ YOLOv8 实时/离线视频检测 + RTMP 推流（带框画面）
 - 保存带框视频（.mp4）
 - 保存逐帧 JSON Lines（.jsonl），含时间戳
 - RTMP 推流 annotated 帧到另一台电脑
-- 统一输出目录：project/name/
+- 统一输出目录：project/name/.
 
 用法示例：
 1) 推 RTMP + 本地显示 + 保存带框视频/JSON
@@ -35,18 +36,18 @@ python video_detect_yolov8_rtmp.py --model best.pt --source input.mp4 \
 
 import argparse
 import json
-import os
 import subprocess
 import time
 from pathlib import Path
 
 import cv2
+
 from ultralytics import YOLO
 
 
 # ---------------- 工具函数 ----------------
 def open_capture(src: str):
-    """优先用 FFMPEG 打开，失败则回退默认后端"""
+    """优先用 FFMPEG 打开，失败则回退默认后端."""
     cap = cv2.VideoCapture(src, cv2.CAP_FFMPEG)
     if not cap.isOpened():
         cap = cv2.VideoCapture(src)
@@ -56,7 +57,7 @@ def open_capture(src: str):
 
 
 def build_writer(cap, out_path: str):
-    """构建本地视频写出器（mp4v），返回 (writer, fps, (w,h))"""
+    """构建本地视频写出器（mp4v），返回 (writer, fps, (w,h))."""
     fps = cap.get(cv2.CAP_PROP_FPS)
     if not fps or fps <= 1e-3:
         fps = 25.0  # RTSP 或部分文件可能取不到 FPS，设个合理默认
@@ -74,36 +75,45 @@ def ensure_parent(path: Path):
 
 
 def timestamp_values(frame_idx: int, fps: float, cap) -> dict:
-    """返回两种时间戳：calc（基于帧率）和 cap（POS_MSEC）"""
+    """返回两种时间戳：calc（基于帧率）和 cap（POS_MSEC）."""
     ts_calc = frame_idx / fps if fps > 0 else None
     ts_cap_msec = cap.get(cv2.CAP_PROP_POS_MSEC)
     ts_cap = ts_cap_msec / 1000.0 if ts_cap_msec and ts_cap_msec > 0 else None
     return {"calc": ts_calc, "cap": ts_cap}
 
 
-def start_rtmp_writer(rtmp_url: str, fps: float, w: int, h: int,
-                      bitrate: str = "2500k", preset: str = "veryfast"):
-    """
-    启动 ffmpeg 子进程，从 stdin 接受 BGR24 原始帧并推送到 RTMP。
-    - pix_fmt: bgr24 -> yuv420p（编码更通用）
-    - preset: veryfast 负担小；如带宽足可调 bitrate
+def start_rtmp_writer(rtmp_url: str, fps: float, w: int, h: int, bitrate: str = "2500k", preset: str = "veryfast"):
+    """启动 ffmpeg 子进程，从 stdin 接受 BGR24 原始帧并推送到 RTMP。 - pix_fmt: bgr24 -> yuv420p（编码更通用） - preset: veryfast 负担小；如带宽足可调
+    bitrate.
     """
     cmd = [
         "ffmpeg",
-        "-loglevel", "error",
+        "-loglevel",
+        "error",
         "-re",  # 近实时节奏（避免过载 RTMP 服务器）
-        "-f", "rawvideo",
-        "-pix_fmt", "bgr24",
-        "-s", f"{w}x{h}",
-        "-r", str(fps),
-        "-i", "-",                      # 从 stdin 读
-        "-c:v", "libx264",
-        "-pix_fmt", "yuv420p",
-        "-preset", preset,
-        "-tune", "zerolatency",
-        "-b:v", bitrate,
-        "-f", "flv",
-        rtmp_url
+        "-f",
+        "rawvideo",
+        "-pix_fmt",
+        "bgr24",
+        "-s",
+        f"{w}x{h}",
+        "-r",
+        str(fps),
+        "-i",
+        "-",  # 从 stdin 读
+        "-c:v",
+        "libx264",
+        "-pix_fmt",
+        "yuv420p",
+        "-preset",
+        preset,
+        "-tune",
+        "zerolatency",
+        "-b:v",
+        bitrate,
+        "-f",
+        "flv",
+        rtmp_url,
     ]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     return proc
@@ -123,8 +133,12 @@ def main():
     ap.add_argument("--device", default=None, help="如 0 或 cpu，默认自动")
     ap.add_argument("--max_frames", type=int, default=0, help="仅处理前 N 帧（0 表示全部）")
     ap.add_argument("--stride", type=int, default=1, help="处理帧间隔（1=逐帧；2=每2帧一次）")
-    ap.add_argument("--timestamp_mode", choices=["calc", "cap", "both"], default="both",
-                    help="时间戳来源：calc(帧率)/cap(POS_MSEC)/both（默认）")
+    ap.add_argument(
+        "--timestamp_mode",
+        choices=["calc", "cap", "both"],
+        default="both",
+        help="时间戳来源：calc(帧率)/cap(POS_MSEC)/both（默认）",
+    )
     ap.add_argument("--show", action="store_true", help="实时弹窗显示检测画面")
     ap.add_argument("--view_scale", type=float, default=1.0, help="显示窗口缩放（仅显示用）")
     # RTMP 推流相关
@@ -158,8 +172,7 @@ def main():
     if args.rtmp_url:
         print(f"[RTMP] Start pushing to: {args.rtmp_url}")
         try:
-            rtmp_proc = start_rtmp_writer(args.rtmp_url, fps, w, h,
-                                          bitrate=args.rtmp_bitrate, preset=args.rtmp_preset)
+            rtmp_proc = start_rtmp_writer(args.rtmp_url, fps, w, h, bitrate=args.rtmp_bitrate, preset=args.rtmp_preset)
         except FileNotFoundError:
             raise RuntimeError("未找到 ffmpeg，请安装并加入系统 PATH 后重试。")
 
@@ -184,13 +197,7 @@ def main():
                 continue
 
             # 推理
-            results = model.predict(
-                frame,
-                imgsz=args.imgsz,
-                conf=args.conf,
-                device=args.device,
-                verbose=False
-            )
+            results = model.predict(frame, imgsz=args.imgsz, conf=args.conf, device=args.device, verbose=False)
             res = results[0]
 
             # 画框
@@ -217,26 +224,32 @@ def main():
                     x1, y1, x2, y2 = xyxy[i]
                     c = float(confs[i])
                     cid = int(clss[i])
-                    dets.append({
-                        "class_id": cid,
-                        "class_name": names.get(cid, str(cid)),
-                        "confidence": round(c, 6),
-                        "bbox_xyxy": [round(float(x1), 2), round(float(y1), 2),
-                                      round(float(x2), 2), round(float(y2), 2)],
-                        "bbox_xywh_norm": [
-                            round(((x1 + x2) / 2) / w, 6),
-                            round(((y1 + y2) / 2) / h, 6),
-                            round((x2 - x1) / w, 6),
-                            round((y2 - y1) / h, 6),
-                        ]
-                    })
+                    dets.append(
+                        {
+                            "class_id": cid,
+                            "class_name": names.get(cid, str(cid)),
+                            "confidence": round(c, 6),
+                            "bbox_xyxy": [
+                                round(float(x1), 2),
+                                round(float(y1), 2),
+                                round(float(x2), 2),
+                                round(float(y2), 2),
+                            ],
+                            "bbox_xywh_norm": [
+                                round(((x1 + x2) / 2) / w, 6),
+                                round(((y1 + y2) / 2) / h, 6),
+                                round((x2 - x1) / w, 6),
+                                round((y2 - y1) / h, 6),
+                            ],
+                        }
+                    )
 
             ts = timestamp_values(frame_idx, fps, cap)
             payload = {
                 "frame_index": frame_idx,
                 "source": args.source,
                 "img_size": {"width": w, "height": h},
-                "detections": dets
+                "detections": dets,
             }
             if args.timestamp_mode in ("calc", "both"):
                 payload["timestamp_calc"] = None if ts["calc"] is None else round(ts["calc"], 3)
@@ -257,11 +270,19 @@ def main():
                 if args.view_scale != 1.0:
                     vh, vw = annotated.shape[:2]
                     view = cv2.resize(annotated, (int(vw * args.view_scale), int(vh * args.view_scale)))
-                cv2.putText(view, f"FPS: {fps_smoothed:.1f}", (12, 28),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2, cv2.LINE_AA)
+                cv2.putText(
+                    view,
+                    f"FPS: {fps_smoothed:.1f}",
+                    (12, 28),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.9,
+                    (0, 255, 0),
+                    2,
+                    cv2.LINE_AA,
+                )
                 cv2.imshow("YOLOv8 Live (RTMP)", view)
                 key = cv2.waitKey(1) & 0xFF
-                if key == ord('q') or key == 27:
+                if key == ord("q") or key == 27:
                     break
 
             frame_idx += 1
@@ -284,7 +305,7 @@ def main():
                 pass
 
     dt = time.time() - t0
-    print(f"Done. Frames processed: {processed}, time: {dt:.2f}s, FPS(processed): {processed/max(dt,1e-6):.2f}")
+    print(f"Done. Frames processed: {processed}, time: {dt:.2f}s, FPS(processed): {processed / max(dt, 1e-6):.2f}")
     print(f"Video saved to: {out_video_path}")
     print(f"JSONL saved to:  {out_json_path}")
     if args.rtmp_url:
