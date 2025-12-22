@@ -1,3 +1,5 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
 import os
 import xml.etree.ElementTree as ET
 from glob import glob
@@ -9,13 +11,13 @@ def xml_to_yolo(xml_dir, txt_dir):
 
     # 第一次遍历：收集所有类别
     classes = set()
-    xml_files = glob(os.path.join(xml_dir, '*.xml'))
+    xml_files = glob(os.path.join(xml_dir, "*.xml"))
 
     for xml_file in xml_files:
         tree = ET.parse(xml_file)
         root = tree.getroot()
-        for obj in root.iter('object'):
-            cls_name = obj.find('name').text.strip()
+        for obj in root.iter("object"):
+            cls_name = obj.find("name").text.strip()
             classes.add(cls_name)
 
     # 按字母顺序排序类别
@@ -28,26 +30,26 @@ def xml_to_yolo(xml_dir, txt_dir):
         root = tree.getroot()
 
         # 获取图像尺寸
-        size = root.find('size')
-        width = int(size.find('width').text)
-        height = int(size.find('height').text)
+        size = root.find("size")
+        width = int(size.find("width").text)
+        height = int(size.find("height").text)
 
         # 准备输出文件路径
-        txt_name = os.path.splitext(os.path.basename(xml_file))[0] + '.txt'
+        txt_name = os.path.splitext(os.path.basename(xml_file))[0] + ".txt"
         txt_path = os.path.join(txt_dir, txt_name)
 
-        with open(txt_path, 'w') as f:
-            for obj in root.iter('object'):
+        with open(txt_path, "w") as f:
+            for obj in root.iter("object"):
                 # 获取类别索引
-                cls_name = obj.find('name').text.strip()
+                cls_name = obj.find("name").text.strip()
                 cls_idx = class_to_idx[cls_name]
 
                 # 解析边界框
-                bbox = obj.find('bndbox')
-                xmin = int(bbox.find('xmin').text)
-                ymin = int(bbox.find('ymin').text)
-                xmax = int(bbox.find('xmax').text)
-                ymax = int(bbox.find('ymax').text)
+                bbox = obj.find("bndbox")
+                xmin = int(bbox.find("xmin").text)
+                ymin = int(bbox.find("ymin").text)
+                xmax = int(bbox.find("xmax").text)
+                ymax = int(bbox.find("ymax").text)
 
                 # 归一化处理
                 x_center = (xmin + xmax) / 2 / width
@@ -69,4 +71,3 @@ def xml_to_yolo(xml_dir, txt_dir):
 xml_dir = "D:\\Work\\PYworks\\ultralytics-main\\ultralytics\\datasets\\xmls"  # 替换为你的XML目录路径
 txt_dir = "D:\\Work\\PYworks\\ultralytics-main\\ultralytics\\datasets\\labels"  # 替换为输出目录路径
 xml_to_yolo(xml_dir, txt_dir)
-
